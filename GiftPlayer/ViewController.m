@@ -157,8 +157,8 @@
     @weakify(self)
     [self.player playWithSource:source animationType:QMSVGAGiftAnimationType extralParam:@{} completeHandler:^(BOOL complete, NSError * _Nullable error) {
         @strongify(self)
-        if (++playCount< self.webpSource.count) {
-            [self startPlayerWebpAnimation:self.svgaSouce[playCount]];
+        if (++playCount< self.svgaSouce.count) {
+            [self startSvgaAnimation:self.svgaSouce[playCount]];
         }else{
             playCount= 0;
         }
