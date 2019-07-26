@@ -7,7 +7,8 @@
 //
 
 #import "AppDelegate.h"
-
+#import <SDWebImageWebPCoder/SDWebImageWebPCoder.h>
+#import <SDWebImageYYPlugin/SDImageYYCoder.h>
 @interface AppDelegate ()
 
 @end
@@ -17,6 +18,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [[SDImageCodersManager sharedManager] addCoder:[SDImageWebPCoder sharedCoder]];
+    //  [[SDImageCodersManager sharedManager] addCoder:[SDImageYYCoder sharedCoder]];
     return YES;
 }
 
