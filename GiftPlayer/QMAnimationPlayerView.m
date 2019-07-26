@@ -14,6 +14,7 @@
 #import "QMAnimatedImageView.h"
 #import "QMSVGAPlayerView.h"
 #import "CommonMacro.h"
+#import <SDWebImageYYPlugin/SDImageYYCoder.h>
 
 NSString * const QMReplaceImageSource = @"QMReplaceImageSource";
 NSString * const QMReplaceImageKey = @"QMReplaceImageKey";
@@ -46,7 +47,9 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [[SDImageCodersManager sharedManager] addCoder:[SDImageWebPCoder sharedCoder]];
+//        [[SDImageCodersManager sharedManager] addCoder:[SDImageWebPCoder sharedCoder]];
+        [[SDImageCodersManager sharedManager] addCoder:[SDImageYYCoder sharedCoder]];
+
         //TODO::这两视图的具体显示，待定
         self.bottomImageView = [UIImageView new];
         self.descInfo = [UILabel new];
