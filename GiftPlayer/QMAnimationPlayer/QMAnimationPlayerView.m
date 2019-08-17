@@ -7,20 +7,28 @@
 //
 
 #import "QMAnimationPlayerView.h"
-#import "QMAlphaVideoView.h"
+
 #import <SDWebImage.h>
+#import <SDWebImageWebPCoder/SDWebImageWebPCoder.h>
+
 #import "SVGA.h"
-#import "QMAnimatedImageView.h"
 #import "QMSVGAPlayerView.h"
+#import "QMAlphaVideoView.h"
+#import "QMAnimatedImageView.h"
+#import "QMAnimationUserInfoView.h"
 #import "CommonMacro.h"
 
-NSString * const QMReplaceImageSource = @"QMReplaceImageSource";
-NSString * const QMReplaceImageKey = @"QMReplaceImageKey";
+QMAnimationContextOption const QMAnimationContextSVGAImageSource = @"SVGAImageSource";///<SVGA动画中需要替换的资源
+QMAnimationContextOption const QMAnimationContextSVGADescription = @"SVGADescription";///<在SVGA中需要替换的文本信息
+QMAnimationContextOption const QMAnimationContextSVGAImageSourceKey = @"SVGAImageSourceKey";
+QMAnimationContextOption const QMAnimationContextSVGADescriptionKey = @"SVGADescriptionKey";
 
-NSString * const QMReplaceDescInfo = @"QMReplaceDescInfo";
-NSString * const QMReplaceDescKey = @"QMReplaceDescKey";
-NSString * const QMShouldCicrleImage = @"QMShouldCicrleImage";
-NSString * const QMViewContentMode = @"QMViewContentMode";
+QMAnimationContextOption const QMAnimationContextImageSource = @"imageSource";
+QMAnimationContextOption const QMAnimationContextDescription = @"description";
+QMAnimationContextOption const QMAnimationContextShouldShowSender = @"showSender";
+QMAnimationContextOption const QMAnimationContextHeadPendant = @"headPendant";
+
+QMAnimationContextOption const QMAnimationContextContentMode = @"contentMode";
 
 @interface QMAnimationPlayerView ()<SVGAPlayerDelegate>
 @property (nonatomic, strong) QMSVGAPlayerView *svgaPlayer;///<SVGA播放视图
@@ -30,10 +38,9 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
 @property (nonatomic, strong) QMAnimatedImageView *animatedImageView;///<webp播放视图
 
 @property (nonatomic, assign) QMGiftAnimationType animationType;///<当前动画类型
-@property (nonatomic, copy) AnimationCompleteHandler completeHandler;///<动画完成的回调
-@property (nonatomic, strong) NSDictionary *extralParams;///<附加参数
-@property (nonatomic, strong) UIImageView *bottomImageView;///<底部图片
-@property (nonatomic, strong) UILabel *descInfo;///描述信息
+@property (nonatomic, copy) QMAnimationFinishBlock finishBlock;///<动画完成的回调
+@property (nonatomic, strong) NSDictionary *extraParams;///<附加参数
+@property (nonatomic, strong) QMAnimationUserInfoView * userInfoView;///<底部用户信息
 
 @property (nonatomic, weak) UIView<QMAnimationPlayerProtocol> * currentPlayView;
 
@@ -45,58 +52,128 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
 {
     self = [super initWithFrame:frame];
     if (self) {
-        //TODO::这两视图的具体显示，待定
-        self.bottomImageView = [UIImageView new];
-        self.descInfo = [UILabel new];
-        [self addSubview:self.bottomImageView];
-        [self addSubview:self.descInfo];
+        [self createUserinfoView];
     }
     return self;
 }
--(void)playWithSource:(NSString *)source animationType:(QMGiftAnimationType)type extralParam:(NSDictionary *)params completeHandler:(nonnull AnimationCompleteHandler)completeHandler{
-    ///检测礼物类型
-    NSURL * url = [self urlWithSource:source];
-    ///<如果当前已有动画在播放，则直接返回，防止一个画面中有多个动画同时播
-    if (!url || self.isAnimating) {
-        if (completeHandler) {
-            completeHandler(NO,nil);
+-(void)createUserinfoView{
+    self.userInfoView = [QMAnimationUserInfoView new];
+    self.userInfoView.alpha = 0;
+
+    [self addSubview:self.userInfoView];
+    [self.userInfoView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self);
+        make.height.mas_equalTo(150);
+        make.bottom.equalTo(self).offset(-SCREEN_HEIGH * 50/375.0);
+    }];
+}
+-(void)playWithSource:(NSString *)source extraParams:(NSDictionary *)params finishBlock:(QMAnimationFinishBlock)finishBlock{
+
+    if (NULLString(source)) {
+        if (finishBlock) {
+            finishBlock(NO,nil);
         }
         return;
     }
+    //    检测后缀名检测文件类型
+    NSString * fileExtension = source.pathExtension.lowercaseString;
+    QMGiftAnimationType animationType ;
+    if ([fileExtension isEqualToString:@"mp4"]) {
+        animationType = QMGiftAnimationTypeMp4;
+    }else if ([fileExtension isEqualToString:@"svga"]){
+        animationType = QMGiftAnimationTypeSVGA;
+    }else if ([fileExtension isEqualToString:@"webp"]){
+        animationType = QMGiftAnimationTypeWebp;
+    }else {
+        NSLog(@"未知动画类型，该控件不支持");
+        if (finishBlock) {
+            finishBlock(NO,nil);
+        }
+        return;
+    }
+    
+    [self playWithSource:source animationType:animationType extraParams:params finishBlock:finishBlock];
+}
+
+-(void)playWithSource:(NSString *)source
+        animationType:(QMGiftAnimationType)type
+          extraParams:(NSDictionary *)params
+          finishBlock:(nonnull QMAnimationFinishBlock)finishBlock{
+    ///检测礼物类型
+    NSURL * url = [self urlWithSource:source];
+    
+    if (!url ) {
+        if (finishBlock) {
+            finishBlock(NO,nil);
+        }
+        return;
+    }
+    ///<如果当前已有动画在播放，则直接停止，播入新动画
+    if (self.isAnimating) {
+        [self stop];
+    }
     self.animationType = type;
     @weakify(self)
-    self.completeHandler = ^(BOOL complete, NSError * _Nullable error) {
+    self.finishBlock = ^(BOOL complete, NSError * _Nullable error) {
         @strongify(self)
         self.isAnimating = NO;///<回调前，将播放状态置为NO
-        if(completeHandler){
-            completeHandler(complete,error);
+        [self hiddenUserInfoViewAnimation];
+        if(finishBlock){
+            finishBlock(complete,error);
         }
     };
-    self.extralParams = params;
+    self.extraParams = params;
     self.isAnimating = YES;
-    
+    NSLog(@"开始播放动画:%@",source);
     ///根据不同的礼物类型创建不同的礼物播放对象
     switch (type) {
-        case QMSVGAGiftAnimationType:
-            self.currentPlayView =  [self playSVGAAnimationWithSource:url];
+        case QMGiftAnimationTypeSVGA:
+            self.currentPlayView = [self playSVGAAnimationWithSource:url];
             break;
-        case QMWebpGiftAnimationType:
-            self.currentPlayView=  [ self playWebpAnimationWithSource:url];
+        case QMGiftAnimationTypeWebp:
+            self.currentPlayView = [self playWebpAnimationWithSource:url];
             break;
-        case QMMp4GiftAnimationType:
+        case QMGiftAnimationTypeMp4:
             self.currentPlayView = [self playAlphaVideoAnimationWithSource:url];
             break;
     }
     if (self.currentPlayView) {
         ///如果当前放视频不为空，则将其提到视图前面
         [self bringSubviewToFront:self.currentPlayView];
+        [self checkAndShowUserInfoView];
+    }else{
+        if (self.finishBlock) {
+            self.finishBlock(NO, nil);
+        }
     }
+}
+
+- (void)checkAndShowUserInfoView{
+    //检测是否需要展示发送者用户信息
+    if (![self.extraParams[QMAnimationContextShouldShowSender] boolValue]) {
+        return;
+    }
+    NSString * headImage = self.extraParams[QMAnimationContextImageSource];
+    NSString * descInfo =  self.extraParams[QMAnimationContextDescription];
+    NSString * headPendant = self.extraParams[QMAnimationContextHeadPendant];
+    if (!NULLString(headImage) && !NULLString(descInfo)) {
+        [self.userInfoView updateWithUserInfo:descInfo userHeaderImage:headImage userHeadPendant:headPendant];
+        [self bringSubviewToFront:self.userInfoView];
+        [UIView animateWithDuration:0.3 animations:^{
+            self.userInfoView.alpha = 1;
+        }];
+    }
+}
+-(void)hiddenUserInfoViewAnimation{
+    [UIView animateWithDuration:0.3 animations:^{
+        self.userInfoView.alpha = 0;
+    }];
 }
 
 -(UIView<QMAnimationPlayerProtocol>*)playSVGAAnimationWithSource:(NSURL *)sourceUrl {
     if (!sourceUrl) {
-        if (self.completeHandler) {
-            self.completeHandler(NO, nil);
+        if (self.finishBlock) {
+            self.finishBlock(NO, nil);
         }
         return nil;
     }
@@ -108,8 +185,8 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
         [self addSubview:_svgaPlayer];
     }
     [self bringSubviewToFront:_svgaPlayer];
-    if (self.extralParams && [self.extralParams.allKeys containsObject:QMViewContentMode]) {
-        self.svgaPlayer.contentMode = [self.extralParams[QMViewContentMode] unsignedIntegerValue];
+    if (self.extraParams && [self.extraParams.allKeys containsObject:QMAnimationContextContentMode]) {
+        self.svgaPlayer.contentMode = [self.extraParams[QMAnimationContextContentMode] unsignedIntegerValue];
     }else{
         self.svgaPlayer.contentMode = UIViewContentModeScaleAspectFill;
     }
@@ -118,8 +195,8 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
         self.svgaParser = [[SVGAParser alloc] init];
     }
     
-    NSString *replaceImageURL = self.extralParams[QMReplaceImageSource];
-    NSString *replaceImageKey = self.extralParams[QMReplaceImageKey];
+    NSString *replaceImageURL = self.extraParams[QMAnimationContextSVGAImageSource];
+    NSString *replaceImageKey = self.extraParams[QMAnimationContextSVGAImageSourceKey];
     @weakify(self)
     if(!NULLString(replaceImageURL) && !NULLString(replaceImageKey)){
         [[SDWebImageManager sharedManager] loadImageWithURL:[NSURL URLWithString:replaceImageURL]
@@ -131,13 +208,10 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
                                                                     completionBlock:^(SVGAVideoEntity * _Nullable videoItem) {
                                                                         @strongify(self)
                                                                         if (videoItem) {
-                                                                            BOOL shouldCircle = [self.extralParams[QMShouldCicrleImage] boolValue];
-                                                                            if (shouldCircle) {
                                                                                 replaceImage = [self circleImage:replaceImage];
-                                                                            }
                                                                             
-                                                                            NSString *replaceDescSource = self.extralParams[QMReplaceDescInfo];
-                                                                            NSString *replaceDescekey = self.extralParams[QMReplaceDescKey];
+                                                                            NSString *replaceDescSource = self.extraParams[QMAnimationContextSVGADescription];
+                                                                            NSString *replaceDescekey = self.extraParams[QMAnimationContextSVGADescriptionKey];
                                                                             if (!NULLString(replaceDescSource) && !NULLString(replaceDescekey)) {
                                                                                 NSAttributedString *text = [[NSAttributedString alloc]
                                                                                                             initWithString:replaceDescSource
@@ -157,15 +231,15 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
                                                                         }else{
                                                                             //回调给外部
                                                                             
-                                                                            if (self.completeHandler) {
-                                                                                self.completeHandler(NO, nil);
+                                                                            if (self.finishBlock) {
+                                                                                self.finishBlock(NO, nil);
                                                                             }
                                                                         }
                                                                     } failureBlock:^(NSError * _Nullable error) {
                                                                         @strongify(self)
-                                                                        //并回调给外部
-                                                                        if (self.completeHandler) {
-                                                                            self.completeHandler(NO, nil);
+                                                                        //回调给外部
+                                                                        if (self.finishBlock) {
+                                                                            self.finishBlock(NO, error);
                                                                         }
                                                                     }];
                                                   }];
@@ -177,16 +251,16 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
                               self.svgaPlayer.videoItem = videoItem;
                               [self.svgaPlayer startAnimation];
                           }else{
-                              //清理SVGA相关信息，并回调给外部
-                              if (self.completeHandler) {
-                                  self.completeHandler(NO, nil);
+                              //回调给外部
+                              if (self.finishBlock) {
+                                  self.finishBlock(NO, nil);
                               }
                           }
                       } failureBlock:^(NSError * _Nullable error) {
                           @strongify(self)
-                          // 清理SVGA相关信息，并回调给外部
-                          if (self.completeHandler) {
-                              self.completeHandler(NO, nil);
+                          // 回调给外部
+                          if (self.finishBlock) {
+                              self.finishBlock(NO, error);
                           }
                       }];
     }
@@ -195,11 +269,10 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
 }
 -(UIView<QMAnimationPlayerProtocol>*)playWebpAnimationWithSource:(NSURL *)sourceURL{
     if(!sourceURL){
-        if (self.completeHandler) {
-            self.completeHandler(NO, nil);
+        if (self.finishBlock) {
+            self.finishBlock(NO, nil);
         }
         return nil;
-        
     }
     
     if (!self.animatedImageView) {
@@ -214,9 +287,8 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
     @weakify(self)
     self.animatedImageView.animationDidFinishHandler = ^(BOOL finish) {
         @strongify(self)
-        [self disposeAnimatedImageView];
-        if (self.completeHandler && self.animationType == QMWebpGiftAnimationType) {
-            self.completeHandler(YES, nil);
+        if (self.finishBlock && self.animationType == QMGiftAnimationTypeWebp) {
+            self.finishBlock(YES, nil);
         }
     };
     
@@ -230,8 +302,8 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
                                           if (!error) {
                                               [self.animatedImageView startAnimatingStatusCheck];
                                           }else{
-                                              if (self.completeHandler) {
-                                                  self.completeHandler(NO, nil);
+                                              if (self.finishBlock) {
+                                                  self.finishBlock(NO, error);
                                               }
                                               
                                           }
@@ -242,8 +314,8 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
 
 -(UIView<QMAnimationPlayerProtocol>*)playAlphaVideoAnimationWithSource:(NSURL *)source{
     if (!source) {
-        if (self.completeHandler) {
-            self.completeHandler(NO, nil);
+        if (self.finishBlock) {
+            self.finishBlock(NO, nil);
         }
         return nil;
     }
@@ -255,8 +327,8 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
     @weakify(self)
     [self.videoPlayerView playVideoWithSource:source completeHandler:^(BOOL finish, NSError * _Nullable error) {
         @strongify(self)
-        if (self.completeHandler) {
-            self.completeHandler(finish, error);
+        if (self.finishBlock) {
+            self.finishBlock(finish, error);
         }
     }];
     return self.videoPlayerView;
@@ -335,9 +407,11 @@ NSString * const QMViewContentMode = @"QMViewContentMode";
 }
 #pragma mark - SVGAPlayerDelegate
 -(void)svgaPlayerDidFinishedAnimation:(SVGAPlayer *)player{
-    [self disposeSVGAPlayer];
-    if (self.completeHandler && self.animationType == QMSVGAGiftAnimationType) {
-        self.completeHandler(YES,nil);
+    player.videoItem = nil;
+    [player clear];
+    [player clearDynamicObjects];
+    if (self.finishBlock && self.animationType == QMGiftAnimationTypeSVGA) {
+        self.finishBlock(YES,nil);
     }
 }
 #pragma mark - 事件透传

@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <SDWebImageWebPCoder/SDWebImageWebPCoder.h>
 #import <SDWebImageYYPlugin/SDImageYYCoder.h>
+#import <MTHawkeyeClient.h>
 @interface AppDelegate ()
 
 @end
@@ -18,7 +19,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [[MTHawkeyeClient shared] startServer];
     [[SDImageCodersManager sharedManager] addCoder:[SDImageWebPCoder sharedCoder]];
+    [SDImageCacheConfig defaultCacheConfig].maxMemoryCost = 20*1024*1024;
     //  [[SDImageCodersManager sharedManager] addCoder:[SDImageYYCoder sharedCoder]];
     return YES;
 }

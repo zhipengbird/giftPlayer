@@ -56,7 +56,6 @@
         self.playerView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
     }
     ///对播放的视频进行缓存
-//    NSURL *url = [QMPlayerCache proxyURLWithURL:sourceURL];
     AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:sourceURL];
     if (!self.player) {
         ///进行多次复用player
@@ -89,6 +88,12 @@
     if (_player.currentItem == notification.object) {
         _isPlaying  = false;
         [self.movie endProcessing];
+        [self.movie removeAllTargets];
+        [self.filter removeAllTargets];
+        self.filter = nil;
+        self.movie = nil;
+        [self.playerView removeFromSuperview];
+        self.playerView = nil;
         ///去除通知监听
         [[NSNotificationCenter defaultCenter]removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:self.player.currentItem];
         [self.player replaceCurrentItemWithPlayerItem:nil];
@@ -125,6 +130,10 @@
     //动画进入后台时，我们会手动调用endProcessing来结束动画，并回调用给外部，
     //因调用endProcessing后，gpuImageView会保留最后一帧的画面，所以需要将playerView从视图中子移除并置空，下在使用时再次创建
     [self.movie endProcessing];
+    [self.movie removeAllTargets];
+    [self.filter removeAllTargets];
+    self.filter = nil;
+    self.movie = nil;
     [self.playerView removeFromSuperview];
     self.playerView = nil;
     ///去除播放通知监听

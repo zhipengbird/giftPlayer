@@ -13,14 +13,6 @@
 @end
 
 @implementation QMAnimatedImageView
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.maxBufferSize = NSUIntegerMax;
-    }
-    return self;
-}
 - (void)pause {
     self.isPause = YES;
     self.displayAnimationLink.paused = YES;

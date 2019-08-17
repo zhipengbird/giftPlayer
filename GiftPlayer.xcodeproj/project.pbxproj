@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A1765D42307E4910030F174 /* QMGiftZipSourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1765D32307E4900030F174 /* QMGiftZipSourceManager.m */; };
+		0A1765E72307E5D00030F174 /* QMAlphaVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1765DA2307E5CF0030F174 /* QMAlphaVideoView.m */; };
+		0A1765E82307E5D00030F174 /* QMAlphaVideoFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1765DB2307E5CF0030F174 /* QMAlphaVideoFilter.m */; };
+		0A1765E92307E5D00030F174 /* QMAnimatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1765DE2307E5D00030F174 /* QMAnimatedImageView.m */; };
+		0A1765EA2307E5D00030F174 /* QMAnimationUserInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1765DF2307E5D00030F174 /* QMAnimationUserInfoView.m */; };
+		0A1765EB2307E5D00030F174 /* QMSVGAPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1765E32307E5D00030F174 /* QMSVGAPlayerView.m */; };
+		0A1765EC2307E5D00030F174 /* QMAnimationPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A1765E52307E5D00030F174 /* QMAnimationPlayerView.m */; };
+		0A3777C822F144D800565181 /* source.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A3777C722F144D800565181 /* source.txt */; };
 		0ACABEF522EB008700BC4DB7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ACABEF422EB008700BC4DB7 /* AppDelegate.m */; };
 		0ACABEF822EB008700BC4DB7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ACABEF722EB008700BC4DB7 /* ViewController.m */; };
 		0ACABEFB22EB008700BC4DB7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0ACABEF922EB008700BC4DB7 /* Main.storyboard */; };
@@ -15,6 +23,7 @@
 		0ACABF0322EB008800BC4DB7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ACABF0222EB008800BC4DB7 /* main.m */; };
 		0ACABF0D22EB008900BC4DB7 /* GiftPlayerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ACABF0C22EB008900BC4DB7 /* GiftPlayerTests.m */; };
 		0ACABF1822EB008900BC4DB7 /* GiftPlayerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ACABF1722EB008900BC4DB7 /* GiftPlayerUITests.m */; };
+		0ACABF7922EB074E00BC4DB7 /* Source.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0ACABF7822EB074E00BC4DB7 /* Source.bundle */; };
 		1E9C9887993DE4AA3496AF5F /* libPods-GiftPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4B1B3A24B60C21B1762E3AF /* libPods-GiftPlayer.a */; };
 		5AB4E9081510EC0A6E558BFF /* libPods-GiftPlayerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 709EE46720E9FF87D3DDBA9D /* libPods-GiftPlayerTests.a */; };
 		7896677FFFF8D52B683AC3E4 /* libPods-GiftPlayerUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C69988FB34224991F55E83C4 /* libPods-GiftPlayerUITests.a */; };
@@ -38,6 +47,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A1765D22307E4900030F174 /* QMGiftZipSourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMGiftZipSourceManager.h; sourceTree = "<group>"; };
+		0A1765D32307E4900030F174 /* QMGiftZipSourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMGiftZipSourceManager.m; sourceTree = "<group>"; };
+		0A1765D72307E5CF0030F174 /* QMAnimationUserInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMAnimationUserInfoView.h; sourceTree = "<group>"; };
+		0A1765D82307E5CF0030F174 /* QMAnimatedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMAnimatedImageView.h; sourceTree = "<group>"; };
+		0A1765DA2307E5CF0030F174 /* QMAlphaVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMAlphaVideoView.m; sourceTree = "<group>"; };
+		0A1765DB2307E5CF0030F174 /* QMAlphaVideoFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMAlphaVideoFilter.m; sourceTree = "<group>"; };
+		0A1765DC2307E5CF0030F174 /* QMSVGAPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMSVGAPlayerView.h; sourceTree = "<group>"; };
+		0A1765DE2307E5D00030F174 /* QMAnimatedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMAnimatedImageView.m; sourceTree = "<group>"; };
+		0A1765DF2307E5D00030F174 /* QMAnimationUserInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMAnimationUserInfoView.m; sourceTree = "<group>"; };
+		0A1765E02307E5D00030F174 /* QMAlphaVideoFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMAlphaVideoFilter.h; sourceTree = "<group>"; };
+		0A1765E12307E5D00030F174 /* QMAlphaVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMAlphaVideoView.h; sourceTree = "<group>"; };
+		0A1765E22307E5D00030F174 /* QMAnimationPlayerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMAnimationPlayerProtocol.h; sourceTree = "<group>"; };
+		0A1765E32307E5D00030F174 /* QMSVGAPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMSVGAPlayerView.m; sourceTree = "<group>"; };
+		0A1765E42307E5D00030F174 /* QMAnimationPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMAnimationPlayerView.h; sourceTree = "<group>"; };
+		0A1765E52307E5D00030F174 /* QMAnimationPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMAnimationPlayerView.m; sourceTree = "<group>"; };
+		0A3777C722F144D800565181 /* source.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = source.txt; sourceTree = "<group>"; };
 		0ACABEF022EB008700BC4DB7 /* GiftPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GiftPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ACABEF322EB008700BC4DB7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		0ACABEF422EB008700BC4DB7 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -54,6 +79,8 @@
 		0ACABF1322EB008900BC4DB7 /* GiftPlayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GiftPlayerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0ACABF1722EB008900BC4DB7 /* GiftPlayerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GiftPlayerUITests.m; sourceTree = "<group>"; };
 		0ACABF1922EB008900BC4DB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0ACABF7522EB03AA00BC4DB7 /* CommonMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMacro.h; sourceTree = "<group>"; };
+		0ACABF7822EB074E00BC4DB7 /* Source.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Source.bundle; sourceTree = "<group>"; };
 		2EBC27EEF3A4CC328DFE8C22 /* Pods-GiftPlayerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GiftPlayerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GiftPlayerTests/Pods-GiftPlayerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5A6C349217AB2BA586A8B0A1 /* Pods-GiftPlayerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GiftPlayerUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GiftPlayerUITests/Pods-GiftPlayerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		5FB879F10C278F05A7CBF382 /* Pods-GiftPlayerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GiftPlayerUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-GiftPlayerUITests/Pods-GiftPlayerUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -93,6 +120,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A1765D52307E5CF0030F174 /* QMAnimationPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				0A1765D62307E5CF0030F174 /* QMAlphaVideoPlayer */,
+				0A1765E42307E5D00030F174 /* QMAnimationPlayerView.h */,
+				0A1765E52307E5D00030F174 /* QMAnimationPlayerView.m */,
+			);
+			path = QMAnimationPlayer;
+			sourceTree = "<group>";
+		};
+		0A1765D62307E5CF0030F174 /* QMAlphaVideoPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				0A1765E02307E5D00030F174 /* QMAlphaVideoFilter.h */,
+				0A1765DB2307E5CF0030F174 /* QMAlphaVideoFilter.m */,
+				0A1765E12307E5D00030F174 /* QMAlphaVideoView.h */,
+				0A1765DA2307E5CF0030F174 /* QMAlphaVideoView.m */,
+				0A1765D82307E5CF0030F174 /* QMAnimatedImageView.h */,
+				0A1765DE2307E5D00030F174 /* QMAnimatedImageView.m */,
+				0A1765E22307E5D00030F174 /* QMAnimationPlayerProtocol.h */,
+				0A1765D72307E5CF0030F174 /* QMAnimationUserInfoView.h */,
+				0A1765DF2307E5D00030F174 /* QMAnimationUserInfoView.m */,
+				0A1765DC2307E5CF0030F174 /* QMSVGAPlayerView.h */,
+				0A1765E32307E5D00030F174 /* QMSVGAPlayerView.m */,
+			);
+			path = QMAlphaVideoPlayer;
+			sourceTree = "<group>";
+		};
+		0A3777C022F1344F00565181 /* GiftDownloader */ = {
+			isa = PBXGroup;
+			children = (
+				0A1765D22307E4900030F174 /* QMGiftZipSourceManager.h */,
+				0A1765D32307E4900030F174 /* QMGiftZipSourceManager.m */,
+			);
+			path = GiftDownloader;
+			sourceTree = "<group>";
+		};
 		0ACABEE722EB008700BC4DB7 = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +182,11 @@
 		0ACABEF222EB008700BC4DB7 /* GiftPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				0A1765D52307E5CF0030F174 /* QMAnimationPlayer */,
+				0A3777C722F144D800565181 /* source.txt */,
+				0A3777C022F1344F00565181 /* GiftDownloader */,
+				0ACABF7822EB074E00BC4DB7 /* Source.bundle */,
+				0ACABF7522EB03AA00BC4DB7 /* CommonMacro.h */,
 				0ACABEF322EB008700BC4DB7 /* AppDelegate.h */,
 				0ACABEF422EB008700BC4DB7 /* AppDelegate.m */,
 				0ACABEF622EB008700BC4DB7 /* ViewController.h */,
@@ -279,8 +348,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A3777C822F144D800565181 /* source.txt in Resources */,
 				0ACABF0022EB008800BC4DB7 /* LaunchScreen.storyboard in Resources */,
 				0ACABEFD22EB008800BC4DB7 /* Assets.xcassets in Resources */,
+				0ACABF7922EB074E00BC4DB7 /* Source.bundle in Resources */,
 				0ACABEFB22EB008700BC4DB7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -405,9 +476,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A1765EB2307E5D00030F174 /* QMSVGAPlayerView.m in Sources */,
+				0A1765E82307E5D00030F174 /* QMAlphaVideoFilter.m in Sources */,
 				0ACABEF822EB008700BC4DB7 /* ViewController.m in Sources */,
+				0A1765EC2307E5D00030F174 /* QMAnimationPlayerView.m in Sources */,
+				0A1765D42307E4910030F174 /* QMGiftZipSourceManager.m in Sources */,
+				0A1765EA2307E5D00030F174 /* QMAnimationUserInfoView.m in Sources */,
+				0A1765E72307E5D00030F174 /* QMAlphaVideoView.m in Sources */,
 				0ACABF0322EB008800BC4DB7 /* main.m in Sources */,
 				0ACABEF522EB008700BC4DB7 /* AppDelegate.m in Sources */,
+				0A1765E92307E5D00030F174 /* QMAnimatedImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,6 +660,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KFSKA2NQKM;
 				INFOPLIST_FILE = GiftPlayer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -600,6 +679,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KFSKA2NQKM;
 				INFOPLIST_FILE = GiftPlayer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
